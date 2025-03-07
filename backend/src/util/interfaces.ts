@@ -1,148 +1,88 @@
-export interface ITokenData {
-  userId: string;
-  email: string;
-}
+import { Types } from "mongoose";
+import { AppointmentStatus } from "../domain/models/appointmentModel";
+import { AppointmentSlotStatus } from "../domain/models/appointmentSlotModel";
+import { ClinicType } from "../domain/models/clinicModel";
 
-export interface IAddPostData {
-  caption: string;
-  region: string | null;
-}
-
-export interface ISavePostData {
-  postId: string;
-}
-
-export interface ILikePostData {
-  postId: string;
-}
-
-export interface ServiceResponse<T = unknown> {
-  status: boolean;
-  statusCode: 401 | 500 | 400 | 200 | 404;
-  message: string | null;
-  data: T | null;
-}
-
-export interface IRegisterUser {
-  email: string;
-  password: string;
+// Schema Interfaces
+export interface IPatient extends Document {
+  _id: Types.ObjectId;
   firstName: string;
   lastName: string;
-  userName: string;
-  dob: Date;
-}
-
-export interface ILoginUser {
   email: string;
   password: string;
-}
-export interface IUpdatePostData {
-  postId: string;
-  caption: string;
-  region: string | null;
-  isImageUpdated: string;
+  profile: Types.ObjectId | IProfile;
+  dob: Date;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-export interface IUpdateProfileData {
+export interface IProfile extends Document {
+  _id: Types.ObjectId;
+  profileName: string;
+  documents: string[] | IDocument[];
+  profilePicture: string | null;
+  patient: Types.ObjectId | IPatient;
+}
+
+export interface IDocument extends Document {
+  _id: Types.ObjectId;
+  documents: {
+    documentName: string;
+    documentType: DocumentType;
+    documentDescription: string | null;
+    documentFile: string;
+  }[];
+  appointmentId: Types.ObjectId | IAppointment;
+  clinicId: Types.ObjectId | IClinic;
+  profile: Types.ObjectId | IProfile;
+  sentBy: "patient" | "clinic";
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface IClinic extends Document {
+  _id: string;
   name: string;
-  description: string;
-  isImageUpdated: boolean;
-}
-
-export interface ICreateComment {
-  postId: string;
-  comment: string;
-}
-
-export interface ICreateReply {
-  commentId: string;
-  reply: string;
-}
-
-export interface IUpdateComment {
-  commentId: string;
-  comment: string;
-}
-
-export interface IUpdateReply {
-  replyId: string;
-  reply: string;
-}
-
-export interface IMessageRequest {
-  senderId: string;
-  receiverId: string;
-  message: string;
-}
-
-export interface ICommentDto {
-  commentId: string;
-  comment: string;
-  isEdited: boolean;
-  postId: string;
-  commentedBy: {
-    userId: string;
-    userName: string;
-    profilePicture: string;
+  address: string;
+  phone: string;
+  email: string;
+  clinicType: ClinicType;
+  description?: string;
+  services: string[];
+  operatingHours: {
+    [day: string]: {
+      openTime: string;
+      closeTime: string;
+    };
   };
-  replyCount: number;
-  createdAt: Date;
-  updatedAt: Date;
+  doctors: Types.ObjectId[] | IDoctor[];
 }
 
-export interface IConversationDto {
-  conversationId: string;
-  participants: [
-    {
-      userId: string;
-      userName: string;
-      profilePicture: string;
-    }
-  ];
-  messages: [
-    {
-      messageId: string;
-      content: string;
-      isEdited: boolean;
-      senderId: string;
-      createdAt: Date;
-    }
-  ];
+export interface IAppointmentSlot extends Document {
+  _id: string;
+  doctorId: string | IDoctor;
+  clinicId: string | IClinic;
+  dateTime: Date;
+  status: AppointmentSlotStatus;
 }
 
-export interface IReplyDto {
-  replyId: string;
-  reply: string;
-  isEdited: boolean;
-  commentId: string;
-  replyBy: {
-    userId: string;
-    userName: string;
-    profilePicture: string;
-  };
-  createdAt: Date;
-  updatedAt: Date;
+export interface IDoctor extends Document {
+  _id: string;
+  name: string;
+  email: string;
+  specialization: string;
+  clinic: Types.ObjectId | IClinic;
+  availableSlots: IAppointmentSlot[];
+  profilePicture?: string;
 }
 
-export interface IPostDto {
-  postId: string;
-  caption: string;
-  region: string | null;
-  postImage: string;
-  postedBy: {
-    userId: string;
-    userName: string;
-    profilePicture: string;
-  };
-  totalLikes: number;
-  totalSave: number;
-  totalComments: number;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-export interface IFollowerDto {
-  userId: string;
-  profilePicture: string;
-  userName: string;
+export interface IAppointment extends Document {
+  patient: Types.ObjectId | IPatient;
+  doctor: Types.ObjectId | IDoctor;
+  mentalHealthProfessional?: Types.ObjectId;
+  date: Date;
+  status: AppointmentStatus;
+  symptoms?: string;
+  diagnosis?: string;
+  followUp?: Date;
 }
