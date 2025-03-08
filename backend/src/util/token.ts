@@ -34,6 +34,7 @@ export const verifyToken = (
       const jwtData: ITokenData = {
         userId: data.userId,
         email: data.email,
+        userType: data.userType,
       };
 
       res.locals.jwtData = jwtData;

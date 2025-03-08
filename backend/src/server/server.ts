@@ -4,6 +4,8 @@ import express from "express";
 import { createServer } from "http";
 import { connectToDatabase } from "../infrastructure/database/mongo/connection";
 import dependencies from "../infrastructure/dependencies";
+import authRoutes from "../interfaces/routes/authRoutes";
+import { verifyToken } from "../util/token";
 
 const app = express();
 const PORT = 3000;
@@ -20,6 +22,9 @@ app.use(
     methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE", "OPTIONS"],
   })
 );
+
+app.use("/api/auth", authRoutes);
+app.use(verifyToken);
 
 const httpServer = createServer(app);
 
