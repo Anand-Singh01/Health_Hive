@@ -2,7 +2,7 @@ import bcrypt from "bcrypt";
 import { Response } from "express";
 import { toPatientDto } from "../../domain/dto/patientDto";
 import {
-  createUser,
+  createPatient,
   findPatientByEmail,
 } from "../../domain/queries/patientAccount";
 import {
@@ -35,7 +35,7 @@ export const registerPatient = async (
       throw new Error("User already exists");
     }
 
-    const savedUser = await createUser(data);
+    const savedUser = await createPatient(data);
 
     if (!savedUser) {
       throw new Error("Error creating user");

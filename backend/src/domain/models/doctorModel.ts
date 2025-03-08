@@ -1,7 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 import { IDoctor } from "../../util/interfaces";
 
-// link to clinic
 const doctorSchema = new Schema<IDoctor>(
   {
     name: { type: String, required: true },

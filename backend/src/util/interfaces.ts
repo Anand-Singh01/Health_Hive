@@ -46,6 +46,7 @@ export interface IClinic extends Document {
   address: string;
   phone: string;
   email: string;
+  password: string;
   clinicType: ClinicType;
   description?: string;
   services: string[];
@@ -79,8 +80,7 @@ export interface IDoctor extends Document {
 export interface IAppointment extends Document {
   patient: Types.ObjectId | IPatient;
   doctor: Types.ObjectId | IDoctor;
-  mentalHealthProfessional?: Types.ObjectId;
-  date: Date;
+  appointmentSlot: Types.ObjectId | IAppointmentSlot;
   status: AppointmentStatus;
   symptoms?: string;
   diagnosis?: string;
@@ -96,6 +96,13 @@ export interface IRegisterPatient {
   dob: Date;
 }
 
+export interface IRegisterClinic {
+  name: string;
+  address: string;
+  phone: string;
+  email: string;
+  password: string;
+}
 
 export interface ILoginPatient {
   email: string;
@@ -121,7 +128,6 @@ export interface IRegisterPatient {
   password: string;
   firstName: string;
   lastName: string;
-  userName: string;
   dob: Date;
 }
 
@@ -138,6 +144,23 @@ export interface IProfileDto {
   profileId: string;
   profileName: string;
   profilePicture: string | null;
+}
+
+export interface IClinicDto {
+  clinicId: string;
+  name: string;
+  address: string;
+  phone: string;
+  email: string;
+  clinicType: ClinicType;
+  description: string;
+  services: string[];
+  operatingHours: {
+    [day: string]: {
+      openTime: string;
+      closeTime: string;
+    };
+  };
 }
 
 export interface ITokenData {

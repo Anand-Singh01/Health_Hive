@@ -4,7 +4,8 @@ import express from "express";
 import { createServer } from "http";
 import { connectToDatabase } from "../infrastructure/database/mongo/connection";
 import dependencies from "../infrastructure/dependencies";
-import authRoutes from "../interfaces/routes/authRoutes";
+import clinicAuthRoutes from "../interfaces/routes/clinicAuthRoutes";
+import patientAuthRoutes from "../interfaces/routes/patientAuthRoutes";
 import { verifyToken } from "../util/token";
 
 const app = express();
@@ -23,7 +24,8 @@ app.use(
   })
 );
 
-app.use("/api/auth", authRoutes);
+app.use("/api/auth/patient", patientAuthRoutes);
+app.use("/api/auth/clinic", clinicAuthRoutes);
 app.use(verifyToken);
 
 const httpServer = createServer(app);

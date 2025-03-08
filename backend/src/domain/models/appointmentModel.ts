@@ -12,12 +12,11 @@ const appointmentSchema = new Schema<IAppointment>(
   {
     patient: { type: Schema.Types.ObjectId, ref: "Patient", required: true },
     doctor: { type: Schema.Types.ObjectId, ref: "Doctor", required: true },
-    mentalHealthProfessional: {
+    appointmentSlot: {
       type: Schema.Types.ObjectId,
-      ref: "User",
-      default: null,
+      ref: "AppointmentSlot",
+      required: true,
     },
-    date: { type: Date, required: true },
     status: {
       type: String,
       enum: AppointmentStatus,

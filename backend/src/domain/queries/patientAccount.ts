@@ -5,8 +5,8 @@ export const findPatientByEmail = async (email: string) => {
   return await Patient.findOne({ email });
 };
 
-export const createUser = async (data: IRegisterPatient) => {
-  const { dob, email, firstName, lastName, password, userName } = data;
+export const createPatient = async (data: IRegisterPatient) => {
+  const { dob, email, firstName, lastName, password } = data;
 
   const salt = await bcrypt.genSalt();
   const hashedPassword = await bcrypt.hash(password, salt);
@@ -17,7 +17,6 @@ export const createUser = async (data: IRegisterPatient) => {
     firstName,
     lastName,
     password: hashedPassword,
-    userName,
   });
   return await newUser.save();
 };
