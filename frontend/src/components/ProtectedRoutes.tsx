@@ -21,11 +21,6 @@ const ProtectedRoutes = () => {
     };
 
     if (!isAuthenticated) {
-      //   if (path.startsWith("/recruiter")) {
-      //     checkRecruiterAuth();
-      //   } else if (path.startsWith("/college")) {
-      //     checkCollegeAuth();
-      //   }
       checkPatientAuth();
     }
   }, [dispatch, navigate, path, isAuthenticated]);
